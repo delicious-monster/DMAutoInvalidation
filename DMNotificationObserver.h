@@ -21,13 +21,13 @@ typedef void(^DMNotificationActionBlock)(NSNotification *notification, id localO
                object:(id)notificationSender
                 owner:(id)owner
                action:(DMNotificationActionBlock)actionBlock
-                      __attribute__((__nonnull__(1,3,4)));
+                      __attribute__((nonnull(1,3,4)));
 
 - (id)initWithName:(NSString *)notificationName
             object:(id)notificationSender
              owner:(id)owner
             action:(DMNotificationActionBlock)actionBlock
-                   __attribute__((__nonnull__(1,3,4)));
+                   __attribute__((nonnull(1,3,4)));
 
 - (void)fireAction:(NSNotification *)notification;
 - (void)invalidate;
