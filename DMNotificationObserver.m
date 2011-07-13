@@ -60,8 +60,14 @@ static NSMutableSet *activeObservers;
     if (!(self = [super init]))
         return nil;
     
+    BOOL ownerAllowsWeakReference = YES;
+    NSSet *classesKnownToDenyWeakReferences = [NSSet setWithObjects:[NSWindowController class], [NSViewController class], [NSWindow class], nil];
+    for (Class cls in classesKnownToDenyWeakReferences)
+        if ([owner isKindOfClass:cls])
+            ownerAllowsWeakReference = NO;
+    
     _unsafeOwner = owner;
-    if ([owner allowsWeakReference]) {
+    if (ownerAllowsWeakReference) {
         _hasWeakOwner = YES;
         _weakOwner = owner;
     }
