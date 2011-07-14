@@ -32,6 +32,14 @@ static NSMutableSet *activeObservers;
 
 #pragma mark NSObject
 
++ (void)initialize;
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        activeObservers = [NSMutableSet set];
+    });
+}
+
 - (void)dealloc;
 {
     [self invalidate];
@@ -39,9 +47,11 @@ static NSMutableSet *activeObservers;
 
 - (NSString *)description;
 {
-    if (_invalidated)
-        return [NSString stringWithFormat:@"<%@ %p (invalidated)>", [self class], self];
-    return [NSString stringWithFormat:@"<%@ %p observing: %@, owner: <%@ %p>>", [self class], self, _notificationName, [_unsafeOwner class], _unsafeOwner];
+    @synchronized (self) {
+        if (_invalidated)
+            return [NSString stringWithFormat:@"<%@ %p (invalidated)>", [self class], self];
+        return [NSString stringWithFormat:@"<%@ %p observing: %@, owner: <%@ %p>>", [self class], self, _notificationName, [_unsafeOwner class], _unsafeOwner];
+    }
 }
 
 
@@ -56,12 +66,17 @@ static NSMutableSet *activeObservers;
 {
     // Possible future: We might want to support a nil owner for global-type things
     NSParameterAssert(notificationName && owner && actionBlock);
-    NSAssert([NSThread isMainThread], @"DMNotificationObserver not supported from a non-main thread");
     if (!(self = [super init]))
         return nil;
     
+    BOOL ownerAllowsWeakReference = YES;
+    NSSet *classesKnownToDenyWeakReferences = [NSSet setWithObjects:[NSWindowController class], [NSViewController class], [NSWindow class], nil];
+    for (Class cls in classesKnownToDenyWeakReferences)
+        if ([owner isKindOfClass:cls])
+            ownerAllowsWeakReference = NO;
+    
     _unsafeOwner = owner;
-    if ([owner allowsWeakReference]) {
+    if (ownerAllowsWeakReference) {
         _hasWeakOwner = YES;
         _weakOwner = owner;
     }
@@ -70,16 +85,16 @@ static NSMutableSet *activeObservers;
     _unsafeNotificationSender = notificationSender;
     _actionBlock = actionBlock;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fireAction:) name:_notificationName object:notificationSender];
+    @synchronized (activeObservers) {
+        [activeObservers addObject:self];
+    }
     
-    if (!activeObservers)
-        activeObservers = [NSMutableSet new];
-    [activeObservers addObject:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fireAction:) name:_notificationName object:notificationSender];
     
 #ifndef NS_BLOCK_ASSERTIONS
     if (!_hasWeakOwner) {
         // Schedule sanity check for non-weak owners
-        dispatch_async(dispatch_get_current_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             /* If we can't weakly reference our owner, we'll have to be manually invalidated. That means our
              * owner must keep a reference to us. Assuming that reference is strong (which it should be), our
              * retainCount should be ≥ 3: the activeObservers set, this async block, and our owner's reference.
@@ -99,29 +114,33 @@ static NSMutableSet *activeObservers;
 
 - (void)fireAction:(NSNotification *)notification;
 {
-    if (_invalidated)
-        return;
-    
-    id strongOwner = nil;
-    if (_hasWeakOwner)
-        strongOwner = _weakOwner;
-    else // Otherwise we have to assume the object is still there
-        strongOwner = _unsafeOwner; // If we crash here, our owner should have invalidated us but failed to.
-    
-    if (!strongOwner)
-        return [self invalidate]; // Our owning object has gone away
-    
-    // The above assignment did a msgSend of -retain, so we know we have something object-like in strongOwner.
-    NSAssert1([strongOwner class] == _ownerClass, @"DMNotificationObserver saw a notification fire, but the owner has changed class. The original owner (an %@) was probably freed without it calling -invalidate on its observer, and another object was allocated in its place.", _ownerClass);
-    
-    _actionBlock(notification, strongOwner, self);
+    @synchronized (self) {
+        if (_invalidated)
+            return;
+        
+        id strongOwner = nil;
+        if (_hasWeakOwner)
+            strongOwner = _weakOwner;
+        else // Otherwise we have to assume the object is still there
+            strongOwner = _unsafeOwner; // If we crash here, our owner should have invalidated us but failed to.
+        
+        if (!strongOwner)
+            return [self invalidate]; // Our owning object has gone away
+        
+        // The above assignment did a msgSend of -retain, so we know we have something object-like in strongOwner.
+        NSAssert1([strongOwner class] == _ownerClass, @"DMNotificationObserver saw a notification fire, but the owner has changed class. The original owner (an %@) was probably freed without it calling -invalidate on its observer, and another object was allocated in its place.", _ownerClass);
+        
+        _actionBlock(notification, strongOwner, self);
+    }
 }
 
 - (void)invalidate;
 {
-    if (_invalidated)
-        return;
-    _invalidated = YES;
+    @synchronized (self) {
+        if (_invalidated)
+            return;
+        _invalidated = YES;
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:_notificationName object:_unsafeNotificationSender];
     
     _actionBlock = nil;
@@ -130,7 +149,9 @@ static NSMutableSet *activeObservers;
     _weakOwner = nil;
     _unsafeOwner = nil;
     
-    [activeObservers removeObject:self];
+    @synchronized (activeObservers) {
+        [activeObservers removeObject:self];
+    }
 }
 
 @end
