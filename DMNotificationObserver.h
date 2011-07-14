@@ -15,6 +15,11 @@
 typedef void(^DMNotificationActionBlock)(NSNotification *notification, id localOwner, DMNotificationObserver *observer);
 
 
+/* DMNotificationObserver is thread-safe. It's safe to create and call its method from any thread. Note that
+ * if you create an observer on the main thread, and another object posts a notification on a background
+ * thread, the action block will be run on the posting thread. (This is normal NSNotificationCenter behavior,
+ * and we might want to define the environment better if lots of our clients end up doing a dispatch_async in
+ * their action block.) */
 @interface DMNotificationObserver : NSObject
 
 + (id)observerForName:(NSString *)notificationName
