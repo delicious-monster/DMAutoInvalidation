@@ -95,6 +95,8 @@ static NSMutableSet *activeObservers;
     if (!_hasWeakOwner) {
         // Schedule sanity check for non-weak owners
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (_invalidated)
+                return;
             /* If we can't weakly reference our owner, we'll have to be manually invalidated. That means our
              * owner must keep a reference to us. Assuming that reference is strong (which it should be), our
              * retainCount should be ≥ 3: the activeObservers set, this async block, and our owner's reference.
