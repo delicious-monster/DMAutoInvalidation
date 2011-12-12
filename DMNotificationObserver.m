@@ -50,7 +50,7 @@ static NSMutableSet *activeObservers;
     @synchronized (self) {
         if (_invalidated)
             return [NSString stringWithFormat:@"<%@ %p (invalidated)>", [self class], self];
-        return [NSString stringWithFormat:@"<%@ %p observing: %@, owner: <%@ %p>>", [self class], self, _notificationName, [_unsafeOwner class], _unsafeOwner];
+        return [NSString stringWithFormat:@"<%@ %p observing: %@, owner: <%@ %p>>", [self class], self, _notificationName ? : @"(all)", [_unsafeOwner class], _unsafeOwner];
     }
 }
 
@@ -65,7 +65,7 @@ static NSMutableSet *activeObservers;
 - (id)initWithName:(NSString *)notificationName object:(id)notificationSender owner:(id)owner action:(DMNotificationActionBlock)actionBlock;
 {
     // Possible future: We might want to support a nil owner for global-type things
-    NSParameterAssert(notificationName && owner && actionBlock);
+    NSParameterAssert(owner && actionBlock);
     if (!(self = [super init]))
         return nil;
     
