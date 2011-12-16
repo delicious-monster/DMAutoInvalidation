@@ -22,11 +22,11 @@ typedef void(^DMNotificationActionBlock)(NSNotification *notification, id localO
  * their action block.) */
 @interface DMNotificationObserver : NSObject
 
-+ (id)observerForName:(NSString *)notificationName
-               object:(id)notificationSender
-                owner:(id)owner
-               action:(DMNotificationActionBlock)actionBlock
-                      __attribute__((nonnull(3,4)));
++ (Inst)observerForName:(NSString *)notificationName
+                         object:(id)notificationSender
+                          owner:(id)owner
+                         action:(DMNotificationActionBlock)actionBlock
+                                __attribute__((nonnull(3,4)));
 
 - (id)initWithName:(NSString *)notificationName
             object:(id)notificationSender
