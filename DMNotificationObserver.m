@@ -57,7 +57,7 @@ static NSMutableSet *activeObservers;
 
 #pragma mark API
 
-+ (Inst)observerForName:(NSString *)notificationName object:(id)notificationSender owner:(id)owner action:(DMNotificationActionBlock)actionBlock;
++ (instancetype)observerForName:(NSString *)notificationName object:(id)notificationSender owner:(id)owner action:(DMNotificationActionBlock)actionBlock;
 {
     return [[self alloc] initWithName:notificationName object:notificationSender owner:owner action:actionBlock];
 }

@@ -22,7 +22,7 @@ typedef void(^DMNotificationActionBlock)(NSNotification *notification, id localO
  * their action block.) */
 @interface DMNotificationObserver : NSObject
 
-+ (Inst)observerForName:(NSString *)notificationName
++ (instancetype)observerForName:(NSString *)notificationName
                          object:(id)notificationSender
                           owner:(id)owner
                          action:(DMNotificationActionBlock)actionBlock
