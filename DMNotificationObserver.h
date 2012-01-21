@@ -10,7 +10,7 @@
 
 
 /* The action block is passed the notification, the owner as a parameter (to avoid retain cycles),
- * and the triggering observer (so it can easiliy invalidate it if it needs to). */
+ * and the triggering observer (so it can easily invalidate it if it needs to). */
 @class DMNotificationObserver;
 typedef void(^DMNotificationActionBlock)(NSNotification *notification, id localOwner, DMNotificationObserver *observer);
 
@@ -20,6 +20,10 @@ typedef void(^DMNotificationActionBlock)(NSNotification *notification, id localO
  * thread, the action block will be run on the posting thread. (This is normal NSNotificationCenter behavior,
  * and we might want to define the environment better if lots of our clients end up doing a dispatch_async in
  * their action block.) */
+
+/* The lifetime of a DMNotificationObserver is tied to its owner. Observers are automatically invalidated when
+ * its owner is deallocated. Owners don't need to explicitly keep observers in strong storage (such as ivars);
+ * instead, observers attach themselves to their owner with the associated objects API. */
 @interface DMNotificationObserver : NSObject
 
 + (instancetype)observerForName:(NSString *)notificationName

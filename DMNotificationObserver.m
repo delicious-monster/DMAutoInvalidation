@@ -8,37 +8,33 @@
 
 #import "DMNotificationObserver.h"
 
-#import "DMCommonMacros.h"
+#import <objc/runtime.h>
 
 #if !__has_feature(objc_arc)
 #error This file must be compiled with Automatic Reference Counting (ARC).
 #endif
 
 
-static NSMutableSet *activeObservers;
+static char DMNotificationInvalidatorAssociationKey;
+
+@interface DMObserverInvalidator : NSObject
+@property (nonatomic, retain) NSMutableSet *observers;
+@end
+
 
 @implementation DMNotificationObserver {
     BOOL _invalidated;
     NSString *_notificationName;
+    __unsafe_unretained id _unsafeNotificationSender;
     DMNotificationActionBlock _actionBlock;
     
-    BOOL _hasWeakOwner;
-    id __weak _weakOwner; // Set if owner class allows weak references (_hasWeakOwner == YES)
-    id __unsafe_unretained _unsafeOwner; // Always set
     Class _ownerClass;
     
-    id __unsafe_unretained _unsafeNotificationSender;
+    @package
+    __unsafe_unretained id _unsafeOwner;
 }
 
 #pragma mark NSObject
-
-+ (void)initialize;
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        activeObservers = [NSMutableSet set];
-    });
-}
 
 - (void)dealloc;
 {
@@ -50,7 +46,7 @@ static NSMutableSet *activeObservers;
     @synchronized (self) {
         if (_invalidated)
             return [NSString stringWithFormat:@"<%@ %p (invalidated)>", [self class], self];
-        return [NSString stringWithFormat:@"<%@ %p observing: %@, owner: <%@ %p>>", [self class], self, _notificationName ? : @"(all)", [_unsafeOwner class], _unsafeOwner];
+        return [NSString stringWithFormat:@"<%@ %p observing: %@, owner: <%@ %p>>", [self class], self, _notificationName ? : @"(all)", _ownerClass, _unsafeOwner];
     }
 }
 
@@ -69,47 +65,36 @@ static NSMutableSet *activeObservers;
     if (!(self = [super init]))
         return nil;
     
-    BOOL ownerAllowsWeakReference = YES;
-    NSSet *classesKnownToDenyWeakReferences = [NSSet setWithObjects:[NSWindowController class], [NSViewController class], [NSWindow class], nil];
-    for (Class cls in classesKnownToDenyWeakReferences)
-        if ([owner isKindOfClass:cls])
-            ownerAllowsWeakReference = NO;
-    
     _unsafeOwner = owner;
-    if (ownerAllowsWeakReference) {
-        _hasWeakOwner = YES;
-        _weakOwner = owner;
-    }
     _ownerClass = [owner class];
     _notificationName = [notificationName copy];
     _unsafeNotificationSender = notificationSender;
     _actionBlock = actionBlock;
     
-    @synchronized (activeObservers) {
-        [activeObservers addObject:self];
+    static dispatch_once_t onceToken;
+    static dispatch_semaphore_t invalidatorAssociationMutex;
+    dispatch_once(&onceToken, ^{
+        invalidatorAssociationMutex = dispatch_semaphore_create(1);
+    });
+    
+    // Tie the observer to the owner
+    DMObserverInvalidator *invalidator = objc_getAssociatedObject(owner, &DMNotificationInvalidatorAssociationKey);
+    if (!invalidator) {
+        // Protect against a race creating the associated set. Don't @synchronize on the owner, because someone else could be doing that and we'll deadlock.
+        dispatch_semaphore_wait(invalidatorAssociationMutex, DISPATCH_TIME_FOREVER); {
+            invalidator = objc_getAssociatedObject(owner, &DMNotificationInvalidatorAssociationKey);
+            if (!invalidator) {
+                invalidator = [[DMObserverInvalidator alloc] init];
+                objc_setAssociatedObject(owner, &DMNotificationInvalidatorAssociationKey, invalidator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            }
+        } dispatch_semaphore_signal(invalidatorAssociationMutex);
+    }
+    
+    @synchronized (invalidator) {
+        [invalidator.observers addObject:self];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fireAction:) name:_notificationName object:notificationSender];
-    
-#ifndef NS_BLOCK_ASSERTIONS
-    if (!_hasWeakOwner) {
-        // Schedule sanity check for non-weak owners
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (_invalidated)
-                return;
-            /* If we can't weakly reference our owner, we'll have to be manually invalidated. That means our
-             * owner must keep a reference to us. Assuming that reference is strong (which it should be), our
-             * retainCount should be ≥ 3: the activeObservers set, this async block, and our owner's reference.
-             * If it's < 3, it's very likely our owner doesn't have a reference to us and won't invalidate us
-             * when it gets freed. */
-            NSUInteger retainCount = [[self valueForKey:@"retainCount"] unsignedIntegerValue];
-            if (retainCount < 3) {
-                NSLog(@"Warning: %@ has an owner that doesn't support weak references. Its owner must -invalidate it when the owner is freed, but from the retainCount it appears the owner has no (strong) reference to this observer. This may lead to a crash when the notification fires.", self);
-                DMDebugBreak();
-            }
-        });
-    }
-#endif
     
     return self;
 }
@@ -120,19 +105,8 @@ static NSMutableSet *activeObservers;
         if (_invalidated)
             return;
         
-        id strongOwner = nil;
-        if (_hasWeakOwner)
-            strongOwner = _weakOwner;
-        else // Otherwise we have to assume the object is still there
-            strongOwner = _unsafeOwner; // If we crash here, our owner should have invalidated us but failed to.
-        
-        if (!strongOwner)
-            return [self invalidate]; // Our owning object has gone away
-        
-        // The above assignment did a msgSend of -retain, so we know we have something object-like in strongOwner.
-        NSAssert1([strongOwner class] == _ownerClass, @"DMNotificationObserver saw a notification fire, but the owner has changed class. The original owner (an %@) was probably freed without it calling -invalidate on its observer, and another object was allocated in its place.", _ownerClass);
-        
-        _actionBlock(notification, strongOwner, self);
+        // If our owner has deallocated, we should be invalidated at this point. Since we're not, our owner must still be alive.
+        _actionBlock(notification, _unsafeOwner, self);
     }
 }
 
@@ -145,14 +119,41 @@ static NSMutableSet *activeObservers;
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:_notificationName object:_unsafeNotificationSender];
     
+    id strongOwner = _unsafeOwner;
+    if (strongOwner) {
+        DMObserverInvalidator *invalidator = objc_getAssociatedObject(strongOwner, &DMNotificationInvalidatorAssociationKey);
+        @synchronized (invalidator) {
+            [invalidator.observers removeObject:self];
+        }
+    }
+    
     _actionBlock = nil;
     _notificationName = nil;
     _unsafeNotificationSender = nil;
-    _weakOwner = nil;
     _unsafeOwner = nil;
-    
-    @synchronized (activeObservers) {
-        [activeObservers removeObject:self];
+}
+
+@end
+
+
+@implementation DMObserverInvalidator
+
+@synthesize observers = _observers;
+
+- (id)init;
+{
+    if (!(self = [super init]))
+        return nil;
+    _observers = [NSMutableSet set];
+    return self;
+}
+
+- (void)dealloc;
+{
+    for (DMNotificationObserver *observer in self.observers) {
+        // Our owner is in the process of deallocating. If the owner is touched such that it gets autoreleased, it will enter the pool as a zombie. Clear this out to ensure it's not.
+        observer->_unsafeOwner = nil;
+        [observer invalidate];
     }
 }
 
