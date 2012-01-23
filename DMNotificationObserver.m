@@ -61,6 +61,15 @@
 
 #pragma mark API
 
++ (NSArray *)observersForNames:(NSArray *)notificationNameArray object:(id)notificationSender owner:(id)owner action:(DMNotificationActionBlock)actionBlock;
+{
+    NSMutableArray *observers = [NSMutableArray arrayWithCapacity:notificationNameArray.count];
+    DMNotificationActionBlock sharedActionBlock = [actionBlock copy];
+    for (NSString *name in notificationNameArray)
+        [observers addObject:[self observerForName:name object:notificationSender owner:owner action:sharedActionBlock]];
+    return observers;
+}
+
 + (instancetype)observerForName:(NSString *)notificationName object:(id)notificationSender owner:(id)owner action:(DMNotificationActionBlock)actionBlock;
 {
     return [[self alloc] initWithName:notificationName object:notificationSender owner:owner action:actionBlock];

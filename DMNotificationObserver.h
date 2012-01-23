@@ -27,6 +27,12 @@ typedef void(^DMNotificationActionBlock)(NSNotification *notification, id localO
  * instead, observers attach themselves to their owner with the associated objects API. */
 @interface DMNotificationObserver : NSObject <DMAutoInvalidation>
 
++ (NSArray *)observersForNames:(NSArray *)notificationNameArray
+                        object:(id)notificationSender
+                         owner:(id)owner
+                        action:(DMNotificationActionBlock)actionBlock
+                               __attribute__((nonnull(1,3,4)));
+
 + (instancetype)observerForName:(NSString *)notificationName
                          object:(id)notificationSender
                           owner:(id)owner
