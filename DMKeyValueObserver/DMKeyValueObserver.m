@@ -33,12 +33,12 @@ static char DMKeyValueObserverContext;
     BOOL _invalidated;
     
     DMKeyValueTargetObserver *_targetObserver;
-    __unsafe_unretained id _unsafeTarget;
-    NSString *_keyPath;
-    
     __unsafe_unretained id _unsafeOwner;
     DMKeyValueObserverBlock _actionBlock;
 }
+
+@synthesize object = _unsafeTarget;
+@synthesize keyPath = _keyPath;
 
 #pragma mark NSObject
 

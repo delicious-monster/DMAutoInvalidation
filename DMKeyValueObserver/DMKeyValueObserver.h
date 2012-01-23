@@ -23,6 +23,8 @@ typedef void(^DMKeyValueObserverBlock)(NSDictionary *changeDict, id localOwner, 
 
 - (id)init UNAVAILABLE_ATTRIBUTE;
 - (id)initWithKeyPath:(NSString *)keyPath object:(id)observationTarget owner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;
+@property (readonly, nonatomic, unsafe_unretained) id object; // observation target
+@property (readonly, nonatomic, copy) NSString *keyPath;
 
 - (void)fireAction:(NSDictionary *)changeDict;
 - (void)invalidate;
