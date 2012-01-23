@@ -1,0 +1,359 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		281AADC414CD7BDC00C5C5B3 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281AADC314CD7BDC00C5C5B3 /* AppKit.framework */; };
+		2880EC2714CCFC85003BFCBC /* DMKeyValueObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 2880EC2214CCFC85003BFCBC /* DMKeyValueObserver.m */; };
+		2880EC2914CCFC85003BFCBC /* DMKeyValueObserverTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2880EC2614CCFC85003BFCBC /* DMKeyValueObserverTest.m */; };
+		28944FBE13BAACAD00ABF04E /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28944FBD13BAACAD00ABF04E /* SenTestingKit.framework */; };
+		28944FD313BAACBB00ABF04E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28563CE413B93FB500158C54 /* Foundation.framework */; };
+		28944FDC13BAD93D00ABF04E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28563CE413B93FB500158C54 /* Foundation.framework */; };
+		28BE615314CCFCB500BFD8A1 /* DMKeyValueObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 2880EC2214CCFC85003BFCBC /* DMKeyValueObserver.m */; };
+		28BE615A14CCFCE400BFD8A1 /* DMAutoInvalidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BE615914CCFCE400BFD8A1 /* DMAutoInvalidation.m */; };
+		28BE615B14CCFCE400BFD8A1 /* DMAutoInvalidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BE615914CCFCE400BFD8A1 /* DMAutoInvalidation.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		28944FD813BAD93D00ABF04E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		281AADC314CD7BDC00C5C5B3 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		28563CE413B93FB500158C54 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2880EC2114CCFC85003BFCBC /* DMKeyValueObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMKeyValueObserver.h; sourceTree = "<group>"; };
+		2880EC2214CCFC85003BFCBC /* DMKeyValueObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMKeyValueObserver.m; sourceTree = "<group>"; };
+		2880EC2414CCFC85003BFCBC /* DMKeyValueObserverTest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DMKeyValueObserverTest-Info.plist"; sourceTree = "<group>"; };
+		2880EC2514CCFC85003BFCBC /* DMKeyValueObserverTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMKeyValueObserverTest.h; sourceTree = "<group>"; };
+		2880EC2614CCFC85003BFCBC /* DMKeyValueObserverTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMKeyValueObserverTest.m; sourceTree = "<group>"; };
+		28944FBC13BAACAD00ABF04E /* DMKeyValueObserverTest.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DMKeyValueObserverTest.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		28944FBD13BAACAD00ABF04E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		28944FDA13BAD93D00ABF04E /* DMAround */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = DMAround; path = DMKeyValueObserver; sourceTree = BUILT_PRODUCTS_DIR; };
+		28BE615814CCFCE400BFD8A1 /* DMAutoInvalidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DMAutoInvalidation.h; path = ../DMAutoInvalidation.h; sourceTree = "<group>"; };
+		28BE615914CCFCE400BFD8A1 /* DMAutoInvalidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DMAutoInvalidation.m; path = ../DMAutoInvalidation.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		28944FB813BAACAD00ABF04E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				281AADC414CD7BDC00C5C5B3 /* AppKit.framework in Frameworks */,
+				28944FBE13BAACAD00ABF04E /* SenTestingKit.framework in Frameworks */,
+				28944FD313BAACBB00ABF04E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28944FD713BAD93D00ABF04E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28944FDC13BAD93D00ABF04E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		28563CD513B93FB500158C54 = {
+			isa = PBXGroup;
+			children = (
+				28BE615814CCFCE400BFD8A1 /* DMAutoInvalidation.h */,
+				28BE615914CCFCE400BFD8A1 /* DMAutoInvalidation.m */,
+				2880EC2114CCFC85003BFCBC /* DMKeyValueObserver.h */,
+				2880EC2214CCFC85003BFCBC /* DMKeyValueObserver.m */,
+				2880EC2314CCFC85003BFCBC /* DMKeyValueObserverTest */,
+				28563CE313B93FB500158C54 /* Frameworks */,
+				28563CE113B93FB500158C54 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		28563CE113B93FB500158C54 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				28944FBC13BAACAD00ABF04E /* DMKeyValueObserverTest.octest */,
+				28944FDA13BAD93D00ABF04E /* DMAround */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		28563CE313B93FB500158C54 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				28563CE413B93FB500158C54 /* Foundation.framework */,
+				281AADC314CD7BDC00C5C5B3 /* AppKit.framework */,
+				28944FBD13BAACAD00ABF04E /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2880EC2314CCFC85003BFCBC /* DMKeyValueObserverTest */ = {
+			isa = PBXGroup;
+			children = (
+				2880EC2514CCFC85003BFCBC /* DMKeyValueObserverTest.h */,
+				2880EC2614CCFC85003BFCBC /* DMKeyValueObserverTest.m */,
+				2880EC2B14CCFC8C003BFCBC /* Supporting Files */,
+			);
+			path = DMKeyValueObserverTest;
+			sourceTree = "<group>";
+		};
+		2880EC2B14CCFC8C003BFCBC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2880EC2414CCFC85003BFCBC /* DMKeyValueObserverTest-Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		28944FBB13BAACAD00ABF04E /* DMKeyValueObserverTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28944FD013BAACAE00ABF04E /* Build configuration list for PBXNativeTarget "DMKeyValueObserverTest" */;
+			buildPhases = (
+				28944FB713BAACAD00ABF04E /* Sources */,
+				28944FB813BAACAD00ABF04E /* Frameworks */,
+				28944FB913BAACAD00ABF04E /* Resources */,
+				28944FBA13BAACAD00ABF04E /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DMKeyValueObserverTest;
+			productName = DMAroundTest;
+			productReference = 28944FBC13BAACAD00ABF04E /* DMKeyValueObserverTest.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		28944FD913BAD93D00ABF04E /* DMKeyValueObserver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28944FE413BAD93D00ABF04E /* Build configuration list for PBXNativeTarget "DMKeyValueObserver" */;
+			buildPhases = (
+				28944FD613BAD93D00ABF04E /* Sources */,
+				28944FD713BAD93D00ABF04E /* Frameworks */,
+				28944FD813BAD93D00ABF04E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DMKeyValueObserver;
+			productName = DMAround;
+			productReference = 28944FDA13BAD93D00ABF04E /* DMAround */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		28563CD713B93FB500158C54 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "Delicious Monster Software";
+			};
+			buildConfigurationList = 28563CDA13B93FB500158C54 /* Build configuration list for PBXProject "DMKeyValueObserver" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 28563CD513B93FB500158C54;
+			productRefGroup = 28563CE113B93FB500158C54 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				28944FD913BAD93D00ABF04E /* DMKeyValueObserver */,
+				28944FBB13BAACAD00ABF04E /* DMKeyValueObserverTest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		28944FB913BAACAD00ABF04E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		28944FBA13BAACAD00ABF04E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		28944FB713BAACAD00ABF04E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2880EC2714CCFC85003BFCBC /* DMKeyValueObserver.m in Sources */,
+				2880EC2914CCFC85003BFCBC /* DMKeyValueObserverTest.m in Sources */,
+				28BE615B14CCFCE400BFD8A1 /* DMAutoInvalidation.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28944FD613BAD93D00ABF04E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28BE615314CCFCB500BFD8A1 /* DMKeyValueObserver.m in Sources */,
+				28BE615A14CCFCE400BFD8A1 /* DMAutoInvalidation.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		28563CED13B93FB500158C54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		28563CEE13B93FB500158C54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		28944FD113BAACAE00ABF04E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				INFOPLIST_FILE = "DMKeyValueObserverTest/DMKeyValueObserverTest-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		28944FD213BAACAE00ABF04E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				INFOPLIST_FILE = "DMKeyValueObserverTest/DMKeyValueObserverTest-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+		28944FE513BAD93D00ABF04E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				OTHER_LDFLAGS = (
+					"-flat_namespace",
+					"-undefined",
+					suppress,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		28944FE613BAD93D00ABF04E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				OTHER_LDFLAGS = (
+					"-flat_namespace",
+					"-undefined",
+					suppress,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		28563CDA13B93FB500158C54 /* Build configuration list for PBXProject "DMKeyValueObserver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28563CED13B93FB500158C54 /* Debug */,
+				28563CEE13B93FB500158C54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		28944FD013BAACAE00ABF04E /* Build configuration list for PBXNativeTarget "DMKeyValueObserverTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28944FD113BAACAE00ABF04E /* Debug */,
+				28944FD213BAACAE00ABF04E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		28944FE413BAD93D00ABF04E /* Build configuration list for PBXNativeTarget "DMKeyValueObserver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28944FE513BAD93D00ABF04E /* Debug */,
+				28944FE613BAD93D00ABF04E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 28563CD713B93FB500158C54 /* Project object */;
+}
