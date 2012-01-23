@@ -13,7 +13,7 @@
 /* The action block is passed the notification, the owner as a parameter (to avoid retain cycles),
  * and the triggering observer (so it can easily invalidate it if it needs to). */
 @class DMNotificationObserver;
-typedef void(^DMNotificationActionBlock)(NSNotification *notification, id localOwner, DMNotificationObserver *observer);
+typedef void(^DMNotificationActionBlock)(NSNotification *notification, id localSelf, DMNotificationObserver *observer); // ‘localSelf’ param is actually the owner, which is almost always used as ‘self’
 
 
 /* DMNotificationObserver is thread-safe. It's safe to create and call its method from any thread. Note that

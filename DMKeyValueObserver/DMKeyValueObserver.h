@@ -11,7 +11,7 @@
 
 
 @class DMKeyValueObserver;
-typedef void(^DMKeyValueObserverBlock)(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer);
+typedef void(^DMKeyValueObserverBlock)(NSDictionary *changeDict, id localSelf, DMKeyValueObserver *observer);
 // TODO: Expose handy things, instead of raw changeDict?
 
 
