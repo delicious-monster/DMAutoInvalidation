@@ -138,8 +138,8 @@ static char DMKeyValueObserverContext;
 {
     if (!_invalidated) {
         // This is programmer error! It's no longer safe to call -removeObserver:forKeyPath:context: on our target, so we can't be torn down. Unfortunately it's not possible to recover cleanly from this state.
-        [NSException raise:NSGenericException format:@"Error: The target of %@ is deallocating. The observer should have been sent -invalidate before this point.", self];
         _invalidated = YES; // It's not safe to do proper invalidation anymore
+        [NSException raise:NSGenericException format:@"Error: The target of %@ is deallocating. The observer should have been sent -invalidate before this point.", self];
     }
 }
 
