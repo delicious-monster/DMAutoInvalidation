@@ -10,6 +10,10 @@
 
 #import <objc/message.h>
 
+#if !__has_feature(objc_arc)
+#error This file must be compiled with Automatic Reference Counting (ARC).
+#endif
+
 
 static char DMAutoInvalidatorAssociationKey, DMObserverOwnerAssociationKey;
 
