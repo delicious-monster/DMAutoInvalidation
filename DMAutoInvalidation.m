@@ -25,7 +25,10 @@ static char DMAutoInvalidatorAssociationKey, DMObserverOwnerAssociationKey;
 
 - (void)dealloc;
 {
-    for (id<DMAutoInvalidation> observer in _observers)
+    // Take a local copy of this, since observers could remove themselves from this set when invalidated (mutating it while we're enumerating)
+    NSSet *observersToInvalidate = _observers;
+    _observers = nil;
+    for (id<DMAutoInvalidation> observer in observersToInvalidate)
         [observer invalidate];
 }
 
