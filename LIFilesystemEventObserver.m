@@ -52,13 +52,13 @@ static void callback(ConstFSEventStreamRef streamRef, void *clientCallbackInfo, 
 
 #pragma mark API
 
-+ (instancetype)observerForDirectoryPaths:(NSArray *)paths owner:(id)owner action:(LIFilesystemEventActionBlock)actionBlock;
++ (instancetype)observerForDirectoryPaths:(NSArray *)paths attachedToOwner:(id)owner action:(LIFilesystemEventActionBlock)actionBlock;
 {
 #define DEFAULT_LATENCY (2.0)
-    return [[self alloc] initWithDirectoryPaths:paths owner:owner since:kFSEventStreamEventIdSinceNow latency:DEFAULT_LATENCY action:actionBlock];
+    return [[self alloc] initWithDirectoryPaths:paths attachedToOwner:owner since:kFSEventStreamEventIdSinceNow latency:DEFAULT_LATENCY action:actionBlock];
 }
 
-- (id)initWithDirectoryPaths:(NSArray *)paths owner:(id)owner since:(FSEventStreamEventId)since latency:(NSTimeInterval)latency action:(LIFilesystemEventActionBlock)actionBlock;
+- (id)initWithDirectoryPaths:(NSArray *)paths attachedToOwner:(id)owner since:(FSEventStreamEventId)since latency:(NSTimeInterval)latency action:(LIFilesystemEventActionBlock)actionBlock;
 {
     NSParameterAssert(paths && owner && actionBlock);
     if (!(self = [super init]))

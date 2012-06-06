@@ -16,9 +16,9 @@ typedef void(^LIFilesystemEventActionBlock)(id localSelf, LIFilesystemEventObser
 
 @interface LIFilesystemEventObserver : NSObject <DMAutoInvalidation>
 
-+ (instancetype)observerForDirectoryPaths:(NSArray *)paths owner:(id)owner action:(LIFilesystemEventActionBlock)actionBlock __attribute__((nonnull(1,2,3)));
++ (instancetype)observerForDirectoryPaths:(NSArray *)paths attachedToOwner:(id)owner action:(LIFilesystemEventActionBlock)actionBlock __attribute__((nonnull(1,2,3)));
 
-- (id)initWithDirectoryPaths:(NSArray *)paths owner:(id)owner since:(FSEventStreamEventId)since latency:(NSTimeInterval)latency action:(LIFilesystemEventActionBlock)actionBlock __attribute__((nonnull(1,2,5)));
+- (id)initWithDirectoryPaths:(NSArray *)paths attachedToOwner:(id)owner since:(FSEventStreamEventId)since latency:(NSTimeInterval)latency action:(LIFilesystemEventActionBlock)actionBlock __attribute__((nonnull(1,2,5)));
 
 - (void)fireAction;
 - (void)invalidate;
