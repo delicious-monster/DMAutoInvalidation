@@ -62,7 +62,7 @@ static char DMKeyValueObserverContext;
 }
 
 - (id)init;
-{ NSAssert(NO, @"Bad initializer; use -initWithKeyPath:object:owner:options:action:"); return nil; }
+{ NSAssert(NO, @"Bad initializer; use -initWithKeyPath:object:attachedToOwner:options:action:"); return nil; }
 
 #pragma mark NSObject (NSKeyValueObserving)
 
@@ -98,13 +98,13 @@ static char DMKeyValueObserverContext;
 
 #pragma mark API
 
-+ (instancetype)observerWithKeyPath:(NSString *)keyPath object:(id)observationTarget owner:(id)owner action:(DMKeyValueObserverBlock)actionBlock;
-{ return [self observerWithKeyPath:keyPath object:observationTarget owner:owner options:0 action:actionBlock]; }
++ (instancetype)observerWithKeyPath:(NSString *)keyPath object:(id)observationTarget attachedToOwner:(id)owner action:(DMKeyValueObserverBlock)actionBlock;
+{ return [self observerWithKeyPath:keyPath object:observationTarget attachedToOwner:owner options:0 action:actionBlock]; }
           
-+ (instancetype)observerWithKeyPath:(NSString *)keyPath object:(id)observationTarget owner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;
-{ return [[self alloc] initWithKeyPath:keyPath object:observationTarget owner:owner options:options action:actionBlock]; }
++ (instancetype)observerWithKeyPath:(NSString *)keyPath object:(id)observationTarget attachedToOwner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;
+{ return [[self alloc] initWithKeyPath:keyPath object:observationTarget attachedToOwner:owner options:options action:actionBlock]; }
 
-- (id)initWithKeyPath:(NSString *)keyPath object:(id)observationTarget owner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;
+- (id)initWithKeyPath:(NSString *)keyPath object:(id)observationTarget attachedToOwner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;
 {
     // Possible future: We might want to support a nil owner for global-type things
     NSParameterAssert(owner && actionBlock);

@@ -29,7 +29,7 @@
     NSObject *dummyOwner = [NSObject new];
     
     __block NSUInteger callCount = 0;
-    DMKeyValueObserver *observer = [[DMKeyValueObserver alloc] initWithKeyPath:@"name" object:mdict owner:dummyOwner options:0 action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) {
+    DMKeyValueObserver *observer = [[DMKeyValueObserver alloc] initWithKeyPath:@"name" object:mdict attachedToOwner:dummyOwner options:0 action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) {
         callCount++;
     }];
     
@@ -56,7 +56,7 @@
         NSObject *dummyOwner = [NSObject new];
         
         __block NSUInteger callCount = 0;
-        DMKeyValueObserver *observer = [[DMKeyValueObserver alloc] initWithKeyPath:@"arrangedObjects" object:ac owner:dummyOwner options:NSKeyValueObservingOptionInitial action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) {
+        DMKeyValueObserver *observer = [[DMKeyValueObserver alloc] initWithKeyPath:@"arrangedObjects" object:ac attachedToOwner:dummyOwner options:NSKeyValueObservingOptionInitial action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) {
             callCount++;
         }];
         
@@ -72,7 +72,7 @@
     {
         NSArrayController *ac = [[NSArrayController alloc] initWithContent:[NSArray arrayWithObjects:@"1", @"2", nil]];
         NSObject *dummyOwner = [NSObject new];
-        DMKeyValueObserver *observer = [[DMKeyValueObserver alloc] initWithKeyPath:@"arrangedObjects" object:ac owner:dummyOwner options:NSKeyValueObservingOptionInitial action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) { }];
+        DMKeyValueObserver *observer = [[DMKeyValueObserver alloc] initWithKeyPath:@"arrangedObjects" object:ac attachedToOwner:dummyOwner options:NSKeyValueObservingOptionInitial action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) { }];
         
         // Should pass
         [observer invalidate];
@@ -83,7 +83,7 @@
         NSMutableDictionary *mdict = [NSMutableDictionary dictionary];
         NSObject *dummyOwner = [NSObject new];
         
-        DMKeyValueObserver *observer = [[DMKeyValueObserver alloc] initWithKeyPath:@"name" object:mdict owner:dummyOwner options:0 action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) { }];
+        DMKeyValueObserver *observer = [[DMKeyValueObserver alloc] initWithKeyPath:@"name" object:mdict attachedToOwner:dummyOwner options:0 action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) { }];
         
         STAssertNotNil(observer, nil);
         mdict = nil; // Should log
@@ -92,7 +92,7 @@
         // NSArrayController (and other NSController subclasses) have custom observer tracking code
         NSArrayController *ac = [[NSArrayController alloc] initWithContent:[NSArray arrayWithObjects:@"1", @"2", nil]];
         NSObject *dummyOwner = [NSObject new];
-        (void)[[DMKeyValueObserver alloc] initWithKeyPath:@"arrangedObjects" object:ac owner:dummyOwner options:NSKeyValueObservingOptionInitial action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) { }];
+        (void)[[DMKeyValueObserver alloc] initWithKeyPath:@"arrangedObjects" object:ac attachedToOwner:dummyOwner options:NSKeyValueObservingOptionInitial action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) { }];
         
         ac = nil; // Should log
     }
@@ -114,7 +114,7 @@
         twoLevel.nestedObj.leafValue = @"Kitten";
 
         __block NSUInteger callCount = 0;
-        [DMKeyValueObserver observerWithKeyPath:@"nestedObj.leafValue" object:twoLevel owner:twoLevel action:^(NSDictionary *changeDict, id localSelf, DMKeyValueObserver *observer) {
+        [DMKeyValueObserver observerWithKeyPath:@"nestedObj.leafValue" object:twoLevel attachedToOwner:twoLevel action:^(NSDictionary *changeDict, id localSelf, DMKeyValueObserver *observer) {
             callCount++;
         }];
         STAssertEquals(callCount, 0UL, nil);
@@ -136,7 +136,7 @@
         a.nestedObj = b; b.nestedObj = a;
 
         __block NSUInteger callCount = 0;
-        [DMKeyValueObserver observerWithKeyPath:@"nestedObj.nestedObj.nestedObj.leafValue" object:a owner:a action:^(NSDictionary *changeDict, id localSelf, DMKeyValueObserver *observer) {
+        [DMKeyValueObserver observerWithKeyPath:@"nestedObj.nestedObj.nestedObj.leafValue" object:a attachedToOwner:a action:^(NSDictionary *changeDict, id localSelf, DMKeyValueObserver *observer) {
             callCount++;
         }];
         STAssertEquals(callCount, 0UL, nil);

@@ -61,21 +61,21 @@
 
 #pragma mark API
 
-+ (NSArray *)observersForNames:(NSArray *)notificationNameArray object:(id)notificationSender owner:(id)owner action:(DMNotificationActionBlock)actionBlock;
++ (NSArray *)observersForNames:(NSArray *)notificationNameArray object:(id)notificationSender attachedToOwner:(id)owner action:(DMNotificationActionBlock)actionBlock;
 {
     NSMutableArray *observers = [NSMutableArray arrayWithCapacity:notificationNameArray.count];
     DMNotificationActionBlock sharedActionBlock = [actionBlock copy];
     for (NSString *name in notificationNameArray)
-        [observers addObject:[self observerForName:name object:notificationSender owner:owner action:sharedActionBlock]];
+        [observers addObject:[self observerForName:name object:notificationSender attachedToOwner:owner action:sharedActionBlock]];
     return observers;
 }
 
-+ (instancetype)observerForName:(NSString *)notificationName object:(id)notificationSender owner:(id)owner action:(DMNotificationActionBlock)actionBlock;
++ (instancetype)observerForName:(NSString *)notificationName object:(id)notificationSender attachedToOwner:(id)owner action:(DMNotificationActionBlock)actionBlock;
 {
-    return [[self alloc] initWithName:notificationName object:notificationSender owner:owner action:actionBlock];
+    return [[self alloc] initWithName:notificationName object:notificationSender attachedToOwner:owner action:actionBlock];
 }
 
-- (id)initWithName:(NSString *)notificationName object:(id)notificationSender owner:(id)owner action:(DMNotificationActionBlock)actionBlock;
+- (id)initWithName:(NSString *)notificationName object:(id)notificationSender attachedToOwner:(id)owner action:(DMNotificationActionBlock)actionBlock;
 {
     // Possible future: We might want to support a nil owner for global-type things
     NSParameterAssert(owner && actionBlock);

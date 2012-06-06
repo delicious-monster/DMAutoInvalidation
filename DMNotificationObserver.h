@@ -29,19 +29,19 @@ typedef void(^DMNotificationActionBlock)(NSNotification *notification, id localS
 
 + (NSArray *)observersForNames:(NSArray *)notificationNameArray
                         object:(id)notificationSender
-                         owner:(id)owner
+               attachedToOwner:(id)owner
                         action:(DMNotificationActionBlock)actionBlock
                                __attribute__((nonnull(1,3,4)));
 
 + (instancetype)observerForName:(NSString *)notificationName
                          object:(id)notificationSender
-                          owner:(id)owner
+                attachedToOwner:(id)owner
                          action:(DMNotificationActionBlock)actionBlock
                                 __attribute__((nonnull(3,4)));
 
 - (id)initWithName:(NSString *)notificationName
             object:(id)notificationSender
-             owner:(id)owner
+   attachedToOwner:(id)owner
             action:(DMNotificationActionBlock)actionBlock
                    __attribute__((nonnull(3,4)));
 

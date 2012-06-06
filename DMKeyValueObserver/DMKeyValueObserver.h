@@ -18,11 +18,11 @@ typedef void(^DMKeyValueObserverBlock)(NSDictionary *changeDict, id localSelf, D
 @interface DMKeyValueObserver : NSObject <DMAutoInvalidation>
 
 // TODO: Consider thread safety; target queue; etc.
-+ (instancetype)observerWithKeyPath:(NSString *)keyPath object:(id)observationTarget owner:(id)owner action:(DMKeyValueObserverBlock)actionBlock;
-+ (instancetype)observerWithKeyPath:(NSString *)keyPath object:(id)observationTarget owner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;
++ (instancetype)observerWithKeyPath:(NSString *)keyPath object:(id)observationTarget attachedToOwner:(id)owner action:(DMKeyValueObserverBlock)actionBlock;
++ (instancetype)observerWithKeyPath:(NSString *)keyPath object:(id)observationTarget attachedToOwner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;
 
 - (id)init UNAVAILABLE_ATTRIBUTE;
-- (id)initWithKeyPath:(NSString *)keyPath object:(id)observationTarget owner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;
+- (id)initWithKeyPath:(NSString *)keyPath object:(id)observationTarget attachedToOwner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;
 @property (readonly, nonatomic, unsafe_unretained) id object; // observation target
 @property (readonly, nonatomic, copy) NSString *keyPath;
 
