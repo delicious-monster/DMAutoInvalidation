@@ -12,6 +12,15 @@
 #import "DMKeyValueObserver.h"
 
 
+@interface MyClass : NSObject
+@property (nonatomic, retain) MyClass *nestedObj;
+@property (nonatomic, retain) id leafValue;
+@end
+
+@implementation MyClass
+@synthesize nestedObj, leafValue;
+@end
+
 @implementation DMKeyValueObserverTest
 
 - (void)testOwnerTearDown;
@@ -90,6 +99,63 @@
         ac = nil; // Should throw
     }
 #endif
+}
+
+- (void)testSelfObservation;
+{
+    /* The goal: Many classes want to say something like, "when nested key-path a.b.c is changed, do this".
+     * (For un-nested changes, we'd just typically override the setter.) It would also be nice to declare this
+     * once, i.e. "when (self.)a.b.c changes, fire X", instead of manually maintaining the observation in the
+     * setter -setA: (which is more code, with more things to go wrong).
+     *
+     * This required changing DMObserverInvalidator such that -invalidate is sent earlier in the
+     * deallocation process. */
+    {
+        MyClass *twoLevel = [MyClass new];
+        MyClass *nestedObj = [MyClass new];
+        twoLevel.nestedObj = nestedObj;
+        twoLevel.nestedObj.leafValue = @"Kitten";
+
+        __block NSUInteger callCount = 0;
+        [DMKeyValueObserver observerWithKeyPath:@"nestedObj.leafValue" object:twoLevel owner:twoLevel action:^(NSDictionary *changeDict, id localSelf, DMKeyValueObserver *observer) {
+            callCount++;
+        }];
+        STAssertEquals(callCount, 0UL, nil);
+
+        nestedObj.leafValue = @"Puppy";
+        STAssertEquals(callCount, 1UL, nil);
+        twoLevel.nestedObj.leafValue = @"Bunny";
+        STAssertEquals(callCount, 2UL, nil);
+
+        twoLevel = nil;
+
+        // Shouldn't crash:
+        nestedObj.leafValue = @"Badger";
+        nestedObj = nil;
+    }
+    // Let's make things harder. Use a key-path that passes through 'self' multiple times: A -> B -> A -> B -> leafValue
+    {
+        MyClass *a = [MyClass new], *b = [MyClass new];
+        a.nestedObj = b; b.nestedObj = a;
+
+        __block NSUInteger callCount = 0;
+        [DMKeyValueObserver observerWithKeyPath:@"nestedObj.nestedObj.nestedObj.leafValue" object:a owner:a action:^(NSDictionary *changeDict, id localSelf, DMKeyValueObserver *observer) {
+            callCount++;
+        }];
+        STAssertEquals(callCount, 0UL, nil);
+
+        b.leafValue = @"Kitten";
+        STAssertEquals(callCount, 1UL, nil);
+        b.leafValue = @"Puppy";
+        STAssertEquals(callCount, 2UL, nil);
+
+        a = nil;
+        b.nestedObj = nil;
+
+        // Shouldn't crash:
+        b.leafValue = @"Badger";
+        b = nil;
+    }
 }
 
 @end
