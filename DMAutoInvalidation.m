@@ -133,8 +133,9 @@ struct objc_super_ARCFIXED {
             if (method_getName(instanceMethods[i]) == deallocSel)
                 originalDealloc = instanceMethods[i];
 
-    if (originalDealloc && strcmp(deallocTypes, method_getTypeEncoding(originalDealloc)) != 0)
-        return NSLog(@"%s dealloc method of class %s has unexpected type %s (expected %s)", __func__, class_getName(targetClass), method_getTypeEncoding(originalDealloc), deallocTypes), NO;
+    // Test disabled; NSObject's implementation is reported with sizes, like "v16@0:8' (on 64-bit). I don't know how to check these for equivalence.
+    //if (originalDealloc && strcmp(deallocTypes, method_getTypeEncoding(originalDealloc)) != 0)
+        //return NSLog(@"%s dealloc method of class %s has unexpected type %s (expected %s)", __func__, class_getName(targetClass), method_getTypeEncoding(originalDealloc), deallocTypes), NO;
 
     // Captured variables
     IMP originalDeallocIMP = (originalDealloc ? method_getImplementation(originalDealloc) : NULL);
