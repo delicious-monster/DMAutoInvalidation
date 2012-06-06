@@ -14,8 +14,15 @@
 #endif
 
 
-/* Objects of this class are only used to throw an error if the target object is deallocated while a
- * DMKeyValueObserver is observing it. NSObject's implementation does this by default, but classes that
+#define INVALIDATE_ON_TARGET_DEALLOC 1
+
+#ifndef NS_BLOCK_ASSERTIONS
+#define LOG_ON_TARGET_DEALLOC 1
+#endif
+
+
+/* Objects of this class are used to invalidate a key-value observer if the target object is deallocated while a
+ * DMKeyValueObserver is observing it. NSObject's implementation raises an error here by default, but classes that
  * override it (such as NSArrayController) do NOT log an error -- instead, random corruption happens later. */
 @interface DMKeyValueTargetObserver : NSObject <DMAutoInvalidation>
 - (id)initWithKeyValueObserver:(DMKeyValueObserver *)keyValueObserver target:(id)target;
@@ -113,8 +120,8 @@ static char DMKeyValueObserverContext;
     
     [observationTarget addObserver:self forKeyPath:keyPath options:options context:&DMKeyValueObserverContext];
     
-#ifndef NS_BLOCK_ASSERTIONS
-    // Our clients should call -invalidate on us before the target deallocates. We'll watch the target so we can complain if they didn't.
+#if INVALIDATE_ON_TARGET_DEALLOC
+    // Typical KVO rules say our clients should call -invalidate on us before the target deallocates. We'll watch the target so we can recover if they didn't.
     if (observationTarget != owner)
         _targetObserver = [[DMKeyValueTargetObserver alloc] initWithKeyValueObserver:self target:observationTarget];
 #endif
@@ -137,14 +144,26 @@ static char DMKeyValueObserverContext;
 - (void)targetObserverDidInvalidate;
 {
     if (!_invalidated) {
-        /* This is programmer error! Assuming the target gave us early notification of its deallocation,
-         * we could manually invalidate ourselves here, but that won't fix the problem.
-         *
-         * Client code will possibly crash anyway. We could fire a faux notification that the value is
-         * becoming nil, but [object valueForKeyPath:observedPath] will still return (or pass through)
-         * the deallocating object. */
+#if INVALIDATE_ON_TARGET_DEALLOC
+        /* If you received this message, we are currently in a recoverable state. We have the opportunity
+         * to unregister the observation before the target object deallocates too far. However, this is
+         * ILLEGAL behavior with normal key-value observing, so you may want to avoid it if possible for
+         * compatibility or general cleanliness. */
+#    if LOG_ON_TARGET_DEALLOC
+        NSLog(@"Note: The target of active %@ is deallocating. The observer will be invalidated now, with no change notification sent. Break on -targetObserverDidInvalidate to trace.", self);
+        static BOOL printedSuppression;
+        if (!printedSuppression)
+            NSLog(@"(suppress log with NS_BLOCK_ASSERTIONS or LOG_ON_TARGET_DEALLOC)"), printedSuppression = 1;
+#    endif
+        BOOL trace = NO;
+        if (trace) // Set this to YES in the debugger and step in to see the location of the observer in the source code. Note that this calls the block that otherwise would NOT be run.
+            _actionBlock(nil, _unsafeOwner, self);
+
+        [self invalidate];
+#else
         _invalidated = YES; // It's not safe to do proper invalidation anymore
         [NSException raise:NSGenericException format:@"Error: The target of %@ is deallocating. The observer should have been sent -invalidate before this point.", self];
+#endif
     }
 }
 

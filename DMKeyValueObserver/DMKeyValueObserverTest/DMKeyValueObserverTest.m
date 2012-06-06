@@ -79,8 +79,6 @@
         ac = nil;
         dummyOwner = nil;
     }
-    // If the following code is run, messages should be logged and exceptions thrown - but memory corruption will also occur after the first group, so not all may run.
-#if 0
     {
         NSMutableDictionary *mdict = [NSMutableDictionary dictionary];
         NSObject *dummyOwner = [NSObject new];
@@ -88,7 +86,7 @@
         DMKeyValueObserver *observer = [[DMKeyValueObserver alloc] initWithKeyPath:@"name" object:mdict owner:dummyOwner options:0 action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) { }];
         
         STAssertNotNil(observer, nil);
-        mdict = nil; // Should throw
+        mdict = nil; // Should log
     }
     {
         // NSArrayController (and other NSController subclasses) have custom observer tracking code
@@ -96,9 +94,8 @@
         NSObject *dummyOwner = [NSObject new];
         (void)[[DMKeyValueObserver alloc] initWithKeyPath:@"arrangedObjects" object:ac owner:dummyOwner options:NSKeyValueObservingOptionInitial action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) { }];
         
-        ac = nil; // Should throw
+        ac = nil; // Should log
     }
-#endif
 }
 
 - (void)testSelfObservation;
