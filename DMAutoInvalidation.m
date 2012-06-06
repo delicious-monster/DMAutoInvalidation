@@ -99,6 +99,21 @@ static char DMAutoInvalidatorAssociationKey, DMObserverOwnerAssociationKey;
 
 #pragma mark Private
 
+// objc headers in 10.7 aren't properly compatible with ARC, grr. (10.8 is fine.)
+#if (MAC_OS_X_VERSION_10_7 >= MAC_OS_X_VERSION_MAX_ALLOWED)
+
+IMP (*imp_implementationWithBlock_ARCFIXED)(id block) = (void *)imp_implementationWithBlock;
+#define imp_implementationWithBlock  (*imp_implementationWithBlock_ARCFIXED)
+
+struct objc_super_ARCFIXED {
+    __unsafe_unretained id receiver;
+    __unsafe_unretained Class super_class;
+};
+#define objc_super  objc_super_ARCFIXED
+
+#endif
+
+
 + (BOOL)addEarlyInvalidateOnDeallocToClass:(Class)targetClass;
 {
     const SEL deallocSel = NSSelectorFromString(@"dealloc"); // ARC forbids @selector(dealloc)
