@@ -127,11 +127,14 @@ struct objc_super_ARCFIXED {
     const char *deallocTypes = "v@:";
 
     Method originalDealloc = NULL;
-    Method *const instanceMethods = class_copyMethodList(targetClass, NULL);
-    if (instanceMethods)
-        for (NSUInteger i = 0; !originalDealloc && instanceMethods[i]; i++)
-            if (method_getName(instanceMethods[i]) == deallocSel)
-                originalDealloc = instanceMethods[i];
+    {
+        Method *const instanceMethods = class_copyMethodList(targetClass, NULL);
+        if (instanceMethods)
+            for (NSUInteger i = 0; !originalDealloc && instanceMethods[i]; i++)
+                if (method_getName(instanceMethods[i]) == deallocSel)
+                    originalDealloc = instanceMethods[i];
+        free(instanceMethods);
+    }
 
     // Test disabled; NSObject's implementation is reported with sizes, like "v16@0:8' (on 64-bit). I don't know how to check these for equivalence.
     //if (originalDealloc && strcmp(deallocTypes, method_getTypeEncoding(originalDealloc)) != 0)
@@ -167,14 +170,10 @@ struct objc_super_ARCFIXED {
         return NSLog(@"%s failed to create trampoline for dealloc block", __func__), NO;
 
     // Add or replace the IMP
-    if (originalDealloc) {
-        method_setImplementation(originalDealloc, earlyNotifyDeallocIMP);
-        free(instanceMethods);
-        return YES;
-    } else {
-        free(instanceMethods);
+    if (originalDealloc)
+        return method_setImplementation(originalDealloc, earlyNotifyDeallocIMP), YES;
+    else
         return class_addMethod(targetClass, deallocSel, earlyNotifyDeallocIMP, deallocTypes);
-    }
 }
 
 @end
