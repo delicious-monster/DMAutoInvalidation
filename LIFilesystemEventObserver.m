@@ -7,6 +7,8 @@
 //
 
 #import "LIFilesystemEventObserver.h"
+// <dmclean.filter: lines.sort.uniq>
+#import "DMBlockUtilities.h"
 
 
 static void callback(ConstFSEventStreamRef streamRef, void *clientCallbackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
@@ -75,6 +77,11 @@ static void callback(ConstFSEventStreamRef streamRef, void *clientCallbackInfo, 
         return nil;
     
     [DMObserverInvalidator attachObserver:self toOwner:owner];
+
+#ifndef NS_BLOCK_ASSERTIONS
+    if ([DMBlockUtilities isObject:owner implicitlyRetainedByBlock:actionBlock])
+        DMBlockRetainCycleDetected([NSString stringWithFormat:@"%s action captures owner; use localSelf (localOwner) parameter to fix.", __func__]);
+#endif
     return self;
 }
 
