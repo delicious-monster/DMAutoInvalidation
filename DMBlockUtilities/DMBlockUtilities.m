@@ -28,7 +28,7 @@
     const unsigned long blockSize = blockAsLayout->descriptor->size;
 
     // We only pick out pointers that are all word-aligned
-    const void *curCapturedValue = (void *)((char *)blockAsLayout + blockSize);
+    const void *curCapturedValue = (void *)((uintptr_t)blockAsLayout + blockSize);
     while (--curCapturedValue >= (void *)(blockAsLayout + 1)) // +1 adds sizeof(struct Block_layout), remember
         if (*(void **)curCapturedValue == (__bridge void *)object)
             return YES;
