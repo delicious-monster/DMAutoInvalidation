@@ -1,0 +1,346 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		284B32681581566900C89002 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284B32671581566900C89002 /* Foundation.framework */; };
+		284B327D158156A400C89002 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284B327C158156A400C89002 /* SenTestingKit.framework */; };
+		284B327F158156A400C89002 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284B327E158156A400C89002 /* Cocoa.framework */; };
+		284B328C158156A400C89002 /* DMBlockUtilitiesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 284B328B158156A400C89002 /* DMBlockUtilitiesTest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		284B32931581573C00C89002 /* DMBlockUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 284B32921581573C00C89002 /* DMBlockUtilities.m */; };
+		284B32941581573F00C89002 /* DMBlockUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 284B32921581573C00C89002 /* DMBlockUtilities.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		284B32611581566900C89002 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		284B32631581566900C89002 /* DMBlockUtilities */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DMBlockUtilities; sourceTree = BUILT_PRODUCTS_DIR; };
+		284B32671581566900C89002 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		284B32751581568100C89002 /* Block_private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Block_private.h; sourceTree = "<group>"; };
+		284B327B158156A400C89002 /* DMBlockUtilitiesTest.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DMBlockUtilitiesTest.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		284B327C158156A400C89002 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		284B327E158156A400C89002 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		284B3281158156A400C89002 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		284B3282158156A400C89002 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		284B3283158156A400C89002 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		284B3286158156A400C89002 /* DMBlockUtilitiesTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DMBlockUtilitiesTest-Info.plist"; sourceTree = "<group>"; };
+		284B328A158156A400C89002 /* DMBlockUtilitiesTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DMBlockUtilitiesTest.h; sourceTree = "<group>"; };
+		284B328B158156A400C89002 /* DMBlockUtilitiesTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DMBlockUtilitiesTest.m; sourceTree = "<group>"; };
+		284B32911581573C00C89002 /* DMBlockUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMBlockUtilities.h; sourceTree = "<group>"; };
+		284B32921581573C00C89002 /* DMBlockUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMBlockUtilities.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		284B32601581566900C89002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				284B32681581566900C89002 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		284B3277158156A400C89002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				284B327D158156A400C89002 /* SenTestingKit.framework in Frameworks */,
+				284B327F158156A400C89002 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		284B32581581566900C89002 = {
+			isa = PBXGroup;
+			children = (
+				284B32751581568100C89002 /* Block_private.h */,
+				284B32911581573C00C89002 /* DMBlockUtilities.h */,
+				284B32921581573C00C89002 /* DMBlockUtilities.m */,
+				284B3284158156A400C89002 /* DMBlockUtilitiesTest */,
+				284B32661581566900C89002 /* Frameworks */,
+				284B32641581566900C89002 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		284B32641581566900C89002 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				284B32631581566900C89002 /* DMBlockUtilities */,
+				284B327B158156A400C89002 /* DMBlockUtilitiesTest.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		284B32661581566900C89002 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				284B32671581566900C89002 /* Foundation.framework */,
+				284B327C158156A400C89002 /* SenTestingKit.framework */,
+				284B327E158156A400C89002 /* Cocoa.framework */,
+				284B3280158156A400C89002 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		284B3280158156A400C89002 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				284B3281158156A400C89002 /* AppKit.framework */,
+				284B3282158156A400C89002 /* CoreData.framework */,
+				284B3283158156A400C89002 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		284B3284158156A400C89002 /* DMBlockUtilitiesTest */ = {
+			isa = PBXGroup;
+			children = (
+				284B328A158156A400C89002 /* DMBlockUtilitiesTest.h */,
+				284B328B158156A400C89002 /* DMBlockUtilitiesTest.m */,
+				284B3286158156A400C89002 /* DMBlockUtilitiesTest-Info.plist */,
+			);
+			path = DMBlockUtilitiesTest;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		284B32621581566900C89002 /* DMBlockUtilities */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 284B32721581566900C89002 /* Build configuration list for PBXNativeTarget "DMBlockUtilities" */;
+			buildPhases = (
+				284B325F1581566900C89002 /* Sources */,
+				284B32601581566900C89002 /* Frameworks */,
+				284B32611581566900C89002 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DMBlockUtilities;
+			productName = DMBlockUtilities;
+			productReference = 284B32631581566900C89002 /* DMBlockUtilities */;
+			productType = "com.apple.product-type.tool";
+		};
+		284B327A158156A400C89002 /* DMBlockUtilitiesTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 284B328E158156A400C89002 /* Build configuration list for PBXNativeTarget "DMBlockUtilitiesTest" */;
+			buildPhases = (
+				284B3276158156A400C89002 /* Sources */,
+				284B3277158156A400C89002 /* Frameworks */,
+				284B3278158156A400C89002 /* Resources */,
+				284B3279158156A400C89002 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DMBlockUtilitiesTest;
+			productName = DMBlockUtilitiesTest;
+			productReference = 284B327B158156A400C89002 /* DMBlockUtilitiesTest.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		284B325A1581566900C89002 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0440;
+				ORGANIZATIONNAME = "Delicious Monster Software";
+			};
+			buildConfigurationList = 284B325D1581566900C89002 /* Build configuration list for PBXProject "DMBlockUtilities" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 284B32581581566900C89002;
+			productRefGroup = 284B32641581566900C89002 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				284B32621581566900C89002 /* DMBlockUtilities */,
+				284B327A158156A400C89002 /* DMBlockUtilitiesTest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		284B3278158156A400C89002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		284B3279158156A400C89002 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		284B325F1581566900C89002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				284B32931581573C00C89002 /* DMBlockUtilities.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		284B3276158156A400C89002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				284B328C158156A400C89002 /* DMBlockUtilitiesTest.m in Sources */,
+				284B32941581573F00C89002 /* DMBlockUtilities.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		284B32701581566900C89002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		284B32711581566900C89002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		284B32731581566900C89002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		284B32741581566900C89002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		284B328F158156A400C89002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				INFOPLIST_FILE = "DMBlockUtilitiesTest/DMBlockUtilitiesTest-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		284B3290158156A400C89002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				INFOPLIST_FILE = "DMBlockUtilitiesTest/DMBlockUtilitiesTest-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		284B325D1581566900C89002 /* Build configuration list for PBXProject "DMBlockUtilities" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				284B32701581566900C89002 /* Debug */,
+				284B32711581566900C89002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		284B32721581566900C89002 /* Build configuration list for PBXNativeTarget "DMBlockUtilities" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				284B32731581566900C89002 /* Debug */,
+				284B32741581566900C89002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		284B328E158156A400C89002 /* Build configuration list for PBXNativeTarget "DMBlockUtilitiesTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				284B328F158156A400C89002 /* Debug */,
+				284B3290158156A400C89002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 284B325A1581566900C89002 /* Project object */;
+}
