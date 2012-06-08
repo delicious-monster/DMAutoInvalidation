@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		281AADC414CD7BDC00C5C5B3 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281AADC314CD7BDC00C5C5B3 /* AppKit.framework */; };
+		284B32B9158199D600C89002 /* DMBlockUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 284B32B8158199D600C89002 /* DMBlockUtilities.m */; };
 		2880EC2714CCFC85003BFCBC /* DMKeyValueObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 2880EC2214CCFC85003BFCBC /* DMKeyValueObserver.m */; };
 		2880EC2914CCFC85003BFCBC /* DMKeyValueObserverTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2880EC2614CCFC85003BFCBC /* DMKeyValueObserverTest.m */; };
 		28944FBE13BAACAD00ABF04E /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28944FBD13BAACAD00ABF04E /* SenTestingKit.framework */; };
@@ -32,6 +33,9 @@
 
 /* Begin PBXFileReference section */
 		281AADC314CD7BDC00C5C5B3 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		284B32B6158199D600C89002 /* Block_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Block_private.h; path = ../DMBlockUtilities/Block_private.h; sourceTree = "<group>"; };
+		284B32B7158199D600C89002 /* DMBlockUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DMBlockUtilities.h; path = ../DMBlockUtilities/DMBlockUtilities.h; sourceTree = "<group>"; };
+		284B32B8158199D600C89002 /* DMBlockUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DMBlockUtilities.m; path = ../DMBlockUtilities/DMBlockUtilities.m; sourceTree = "<group>"; };
 		28563CE413B93FB500158C54 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2880EC2114CCFC85003BFCBC /* DMKeyValueObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMKeyValueObserver.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2880EC2214CCFC85003BFCBC /* DMKeyValueObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMKeyValueObserver.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -67,11 +71,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		284B32BB158199DA00C89002 /* DMBlockUtilities */ = {
+			isa = PBXGroup;
+			children = (
+				284B32B6158199D600C89002 /* Block_private.h */,
+				284B32B7158199D600C89002 /* DMBlockUtilities.h */,
+				284B32B8158199D600C89002 /* DMBlockUtilities.m */,
+			);
+			name = DMBlockUtilities;
+			sourceTree = "<group>";
+		};
 		28563CD513B93FB500158C54 = {
 			isa = PBXGroup;
 			children = (
 				28BE615814CCFCE400BFD8A1 /* DMAutoInvalidation.h */,
 				28BE615914CCFCE400BFD8A1 /* DMAutoInvalidation.m */,
+				284B32BB158199DA00C89002 /* DMBlockUtilities */,
 				2880EC2114CCFC85003BFCBC /* DMKeyValueObserver.h */,
 				2880EC2214CCFC85003BFCBC /* DMKeyValueObserver.m */,
 				2880EC2314CCFC85003BFCBC /* DMKeyValueObserverTest */,
@@ -216,6 +231,7 @@
 				2880EC2714CCFC85003BFCBC /* DMKeyValueObserver.m in Sources */,
 				2880EC2914CCFC85003BFCBC /* DMKeyValueObserverTest.m in Sources */,
 				28BE615B14CCFCE400BFD8A1 /* DMAutoInvalidation.m in Sources */,
+				284B32B9158199D600C89002 /* DMBlockUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

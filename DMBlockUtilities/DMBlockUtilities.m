@@ -36,3 +36,9 @@
 }
 
 @end
+
+
+void DMBlockRetainCycleDetected(NSString *msg)
+{
+    NSLog(@"WARNING: Retain cycle detected! %@ Break on DMBlockRetainCycleDetected to debug.", msg);
+}

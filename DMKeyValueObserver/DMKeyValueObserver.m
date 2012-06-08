@@ -8,6 +8,7 @@
 
 #import "DMKeyValueObserver.h"
 
+#import "DMBlockUtilities.h"
 
 #if !__has_feature(objc_arc)
 #error This file must be compiled with Automatic Reference Counting (ARC).
@@ -119,7 +120,12 @@ static char DMKeyValueObserverContext;
     [DMObserverInvalidator attachObserver:self toOwner:owner];
     
     [observationTarget addObserver:self forKeyPath:keyPath options:options context:&DMKeyValueObserverContext];
-    
+
+#ifndef NS_BLOCK_ASSERTIONS
+    if ([DMBlockUtilities isObject:owner implicitlyRetainedByBlock:actionBlock])
+        DMBlockRetainCycleDetected([NSString stringWithFormat:@"%s action captures owner; use localSelf (localOwner) parameter to fix.", __func__]);
+#endif
+
 #if INVALIDATE_ON_TARGET_DEALLOC
     // Typical KVO rules say our clients should call -invalidate on us before the target deallocates. We'll watch the target so we can recover if they didn't.
     if (observationTarget != owner)

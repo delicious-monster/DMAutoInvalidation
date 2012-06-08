@@ -14,3 +14,6 @@
 + (BOOL)isObject:(id)object implicitlyRetainedByBlock:(id)block;
 
 @end
+
+
+extern void DMBlockRetainCycleDetected(NSString *msg); // Logs msg and stuff, provide a function to break on

@@ -8,6 +8,7 @@
 
 #import "DMNotificationObserver.h"
 
+#import "DMBlockUtilities.h"
 
 #if !__has_feature(objc_arc)
 #error This file must be compiled with Automatic Reference Counting (ARC).
@@ -91,6 +92,11 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fireAction:) name:_notificationName object:notificationSender];
     
+#ifndef NS_BLOCK_ASSERTIONS
+    if ([DMBlockUtilities isObject:owner implicitlyRetainedByBlock:actionBlock])
+        DMBlockRetainCycleDetected([NSString stringWithFormat:@"%s action captures owner; use localSelf (localOwner) parameter to fix.", __func__]);
+#endif
+
     return self;
 }
 
