@@ -24,6 +24,7 @@
     if (!block || !object)
         return NO;
 
+#ifndef NS_BLOCK_ASSERTIONS
     const struct Block_layout *blockAsLayout = (__bridge void *)block;
     const unsigned long blockSize = blockAsLayout->descriptor->size;
 
@@ -32,6 +33,9 @@
     while (--curCapturedValue >= (void *)(blockAsLayout + 1)) // +1 adds sizeof(struct Block_layout), remember
         if (*(void **)curCapturedValue == (__bridge void *)object)
             return YES;
+#else
+    NSLog(@"%s Warning: Retained object detection disabled without assertions; this method will always return NO", __func__);
+#endif
     return NO;
 }
 
