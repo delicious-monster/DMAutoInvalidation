@@ -29,9 +29,9 @@
     const unsigned long blockSize = blockAsLayout->descriptor->size;
 
     // We only pick out pointers that are all word-aligned
-    const void *curCapturedValue = (void *)((uintptr_t)blockAsLayout + blockSize);
-    while (--curCapturedValue >= (void *)(blockAsLayout + 1)) // +1 adds sizeof(struct Block_layout), remember
-        if (*(void **)curCapturedValue == (__bridge void *)object)
+    uintptr_t curCapturedValueAddr = (uintptr_t)blockAsLayout + blockSize;
+    while (--curCapturedValueAddr >= (uintptr_t)(blockAsLayout + 1)) // +1 adds sizeof(struct Block_layout), remember
+        if (*(uintptr_t *)curCapturedValueAddr == (uintptr_t)object)
             return YES;
 #else
     NSLog(@"%s Warning: Retained object detection disabled without assertions; this method will always return NO", __func__);
