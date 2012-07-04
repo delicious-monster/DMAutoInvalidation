@@ -30,7 +30,8 @@
 
     // We only pick out pointers that are all word-aligned
     uintptr_t curCapturedValueAddr = (uintptr_t)blockAsLayout + blockSize;
-    while (--curCapturedValueAddr >= (uintptr_t)(blockAsLayout + 1)) // +1 adds sizeof(struct Block_layout), remember
+    curCapturedValueAddr += sizeof(id) - (curCapturedValueAddr % sizeof(id)); // Move to aligned address
+    while ((curCapturedValueAddr -= sizeof(id)) >= (uintptr_t)(blockAsLayout + 1)) // +1 adds sizeof(struct Block_layout), remember
         if (*(uintptr_t *)curCapturedValueAddr == (uintptr_t)object)
             return YES;
 #else
