@@ -161,7 +161,7 @@
 		284B325A1581566900C89002 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Delicious Monster Software";
 			};
 			buildConfigurationList = 284B325D1581566900C89002 /* Build configuration list for PBXProject "DMBlockUtilities" */;
@@ -295,6 +295,7 @@
 		284B328F158156A400C89002 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				INFOPLIST_FILE = "DMBlockUtilitiesTest/DMBlockUtilitiesTest-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -305,6 +306,7 @@
 		284B3290158156A400C89002 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				INFOPLIST_FILE = "DMBlockUtilitiesTest/DMBlockUtilitiesTest-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -331,6 +333,7 @@
 				284B32741581566900C89002 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		284B328E158156A400C89002 /* Build configuration list for PBXNativeTarget "DMBlockUtilitiesTest" */ = {
 			isa = XCConfigurationList;
@@ -339,6 +342,7 @@
 				284B3290158156A400C89002 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
