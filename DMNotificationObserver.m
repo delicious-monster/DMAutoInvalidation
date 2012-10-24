@@ -109,6 +109,7 @@
         // If our owner has deallocated, we should be invalidated at this point. Since we're not, our owner must still be alive.
         DMNotificationActionBlock actionBlock = _actionBlock; // Use a local reference, as the actionBock could call -invalidate on us
         actionBlock(notification, _unsafeOwner, self);
+        [actionBlock self]; // required for compiler to not optimize away retain/release
     }
 }
 
