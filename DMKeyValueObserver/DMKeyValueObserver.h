@@ -12,12 +12,10 @@
 
 @class DMKeyValueObserver;
 typedef void(^DMKeyValueObserverBlock)(NSDictionary *changeDict, id localSelf, DMKeyValueObserver *observer);
-// TODO: Expose handy things, instead of raw changeDict?
 
 
 @interface DMKeyValueObserver : NSObject <DMAutoInvalidation>
 
-// TODO: Consider thread safety; target queue; etc.
 + (instancetype)observerWithKeyPath:(NSString *)keyPath object:(id)observationTarget attachedToOwner:(id)owner action:(DMKeyValueObserverBlock)actionBlock;
 + (instancetype)observerWithKeyPath:(NSString *)keyPath object:(id)observationTarget attachedToOwner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;
 
