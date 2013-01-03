@@ -26,11 +26,12 @@
 
 #ifndef NS_BLOCK_ASSERTIONS
     const struct Block_layout *blockAsLayout = (__bridge void *)block;
-    const unsigned long blockSize = blockAsLayout->descriptor->size;
+    const ptrdiff_t blockSize = blockAsLayout->descriptor->size;
 
     // We only pick out pointers that are all word-aligned
     uintptr_t curCapturedValueAddr = (uintptr_t)blockAsLayout + blockSize;
-    curCapturedValueAddr += sizeof(id) - (curCapturedValueAddr % sizeof(id)); // Move to aligned address
+    if (curCapturedValueAddr % sizeof(id))
+        curCapturedValueAddr += sizeof(id) - (curCapturedValueAddr % sizeof(id)); // Move forward to aligned address (past size, but we walk back before dereferencing)
     while ((curCapturedValueAddr -= sizeof(id)) >= (uintptr_t)(blockAsLayout + 1)) // +1 adds sizeof(struct Block_layout), remember
         if (*(uintptr_t *)curCapturedValueAddr == (uintptr_t)object)
             return YES;
