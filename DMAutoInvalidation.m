@@ -128,6 +128,7 @@ struct objc_super_ARCFIXED {
 
     Method originalDealloc = NULL;
     {
+        // class_copyMethodList() returns only methods defined by this class; class_getInstanceMethod() looks at superclasses too, which isn't what we want.
         Method *const instanceMethods = class_copyMethodList(targetClass, NULL);
         if (instanceMethods)
             for (NSUInteger i = 0; !originalDealloc && instanceMethods[i]; i++)
