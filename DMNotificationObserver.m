@@ -17,6 +17,7 @@
 
 @implementation DMNotificationObserver {
     BOOL _invalidated;
+    NSNotificationCenter *_notificationCenter;
     NSString *_notificationName;
     __unsafe_unretained id _unsafeNotificationSender;
     DMNotificationActionBlock _actionBlock;
@@ -50,7 +51,7 @@
             return;
         _invalidated = YES;
     }
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:_notificationName object:_unsafeNotificationSender];
+    [_notificationCenter removeObserver:self name:_notificationName object:_unsafeNotificationSender];
     
     _actionBlock = nil;
     _notificationName = nil;
@@ -78,19 +79,24 @@
 
 - (id)initWithName:(NSString *)notificationName object:(id)notificationSender attachedToOwner:(id)owner action:(DMNotificationActionBlock)actionBlock;
 {
-    // Possible future: We might want to support a nil owner for global-type things
-    NSParameterAssert(owner && actionBlock);
+    return [self initWithName:notificationName object:notificationSender attachedToOwner:owner notificationCenter:[NSNotificationCenter defaultCenter] action:actionBlock];
+}
+
+- (id)initWithName:(NSString *)notificationName object:(id)notificationSender attachedToOwner:(id)owner notificationCenter:(NSNotificationCenter *)notificationCenter action:(DMNotificationActionBlock)actionBlock; // Designated initializer
+{
+    NSParameterAssert(owner && notificationCenter && actionBlock);
     if (!(self = [super init]))
         return nil;
     
     _unsafeOwner = owner;
+    _notificationCenter = notificationCenter;
     _notificationName = [notificationName copy];
     _unsafeNotificationSender = notificationSender;
     _actionBlock = [actionBlock copy];
     
     [DMObserverInvalidator attachObserver:self toOwner:owner];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fireAction:) name:_notificationName object:notificationSender];
+
+    [_notificationCenter addObserver:self selector:@selector(fireAction:) name:_notificationName object:notificationSender];
     
 #ifndef NS_BLOCK_ASSERTIONS
     if ([DMBlockUtilities isObject:owner implicitlyRetainedByBlock:actionBlock])

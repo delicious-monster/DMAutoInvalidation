@@ -45,6 +45,13 @@ typedef void(^DMNotificationActionBlock)(NSNotification *notification, id localS
             action:(DMNotificationActionBlock)actionBlock
                    __attribute__((nonnull(3,4)));
 
+- (id)initWithName:(NSString *)notificationName
+            object:(id)notificationSender
+   attachedToOwner:(id)owner
+notificationCenter:(NSNotificationCenter *)notificationCenter
+            action:(DMNotificationActionBlock)actionBlock
+                   __attribute__((nonnull(3,4,5))); // Designated initializer
+
 - (void)fireAction:(NSNotification *)notification;
 - (void)invalidate;
 
