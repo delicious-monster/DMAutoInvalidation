@@ -7,14 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DMAutoInvalidation.h" // <DMAutoInvalidation>
 
 
 @class DMKeyValueObserver;
 typedef void(^DMKeyValueObserverBlock)(NSDictionary *changeDict, id localSelf, DMKeyValueObserver *observer);
 
 
-@interface DMKeyValueObserver : NSObject <DMAutoInvalidation>
+@interface DMKeyValueObserver : NSObject
 
 + (instancetype)observerWithKeyPath:(NSString *)keyPath object:(id)observationTarget attachedToOwner:(id)owner action:(DMKeyValueObserverBlock)actionBlock;
 + (instancetype)observerWithKeyPath:(NSString *)keyPath object:(id)observationTarget attachedToOwner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;

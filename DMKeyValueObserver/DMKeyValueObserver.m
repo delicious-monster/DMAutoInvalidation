@@ -8,6 +8,7 @@
 
 #import "DMKeyValueObserver.h"
 
+#import "DMAutoInvalidation.h"
 #import "DMBlockUtilities.h"
 
 #if !__has_feature(objc_arc)
@@ -29,7 +30,7 @@
 - (id)initWithKeyValueObserver:(DMKeyValueObserver *)keyValueObserver target:(id)target;
 @end
 
-@interface DMKeyValueObserver ()
+@interface DMKeyValueObserver () <DMAutoInvalidation>
 #pragma mark Protected: DMKeyValueTargetObserver support
 - (void)targetObserverDidInvalidate;
 @end

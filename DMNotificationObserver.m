@@ -8,11 +8,16 @@
 
 #import "DMNotificationObserver.h"
 
+#import "DMAutoInvalidation.h"
 #import "DMBlockUtilities.h"
 
 #if !__has_feature(objc_arc)
 #error This file must be compiled with Automatic Reference Counting (ARC).
 #endif
+
+
+@interface DMNotificationObserver () <DMAutoInvalidation>
+@end
 
 
 @implementation DMNotificationObserver {

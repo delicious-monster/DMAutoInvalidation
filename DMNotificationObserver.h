@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DMAutoInvalidation.h" // <DMAutoInvalidation>
 
 
 /* The action block is passed the notification, the owner as a parameter (to avoid retain cycles),
@@ -25,7 +24,7 @@ typedef void(^DMNotificationActionBlock)(NSNotification *notification, id localS
 /* The lifetime of a DMNotificationObserver is tied to its owner. Observers are automatically invalidated when
  * its owner is deallocated. Owners don't need to explicitly keep observers in strong storage (such as ivars);
  * instead, observers attach themselves to their owner with the associated objects API. */
-@interface DMNotificationObserver : NSObject <DMAutoInvalidation>
+@interface DMNotificationObserver : NSObject
 
 + (NSArray *)observersForNames:(NSArray *)notificationNameArray
                         object:(id)notificationSender
