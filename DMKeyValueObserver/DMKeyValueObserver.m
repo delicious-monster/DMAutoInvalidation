@@ -9,17 +9,26 @@
 #import "DMKeyValueObserver.h"
 
 #import "DMAutoInvalidation.h"
+
+#if __has_include("DMBlockUtilities.h")
 #import "DMBlockUtilities.h"
+#define HAVE_DMBLOCKUTILITIES 1
+#endif
 
 #if !__has_feature(objc_arc)
 #error This file must be compiled with Automatic Reference Counting (ARC).
 #endif
 
+#if !defined(DMKVO_INVALIDATE_ON_TARGET_DEALLOC)
+#define DMKVO_INVALIDATE_ON_TARGET_DEALLOC 1
+#endif
 
-#define INVALIDATE_ON_TARGET_DEALLOC 1
-
-#ifndef NS_BLOCK_ASSERTIONS
-#define LOG_ON_TARGET_DEALLOC 1
+#if !defined(DMKVO_LOG_ON_TARGET_DEALLOC)
+#    if defined(NS_BLOCK_ASSERTIONS)
+#    define DMKVO_LOG_ON_TARGET_DEALLOC 0
+#    else
+#    define DMKVO_LOG_ON_TARGET_DEALLOC 1
+#    endif
 #endif
 
 
@@ -109,7 +118,7 @@ static char DMKeyValueObserverContext;
 - (id)initWithKeyPath:(NSString *)keyPath object:(id)observationTarget attachedToOwner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;
 {
     // Possible future: We might want to support a nil owner for global-type things
-    NSParameterAssert(owner && actionBlock);
+    NSParameterAssert(keyPath && owner && actionBlock);
     if (!(self = [super init]))
         return nil;
     
@@ -122,12 +131,12 @@ static char DMKeyValueObserverContext;
     
     [observationTarget addObserver:self forKeyPath:keyPath options:options context:&DMKeyValueObserverContext];
 
-#ifndef NS_BLOCK_ASSERTIONS
+#if HAVE_DMBLOCKUTILITIES && !defined(NS_BLOCK_ASSERTIONS)
     if ([DMBlockUtilities isObject:owner implicitlyRetainedByBlock:actionBlock])
         DMBlockRetainCycleDetected([NSString stringWithFormat:@"%s action captures owner; use localSelf (localOwner) parameter to fix.", __func__]);
 #endif
 
-#if INVALIDATE_ON_TARGET_DEALLOC
+#if DMKVO_INVALIDATE_ON_TARGET_DEALLOC
     // Typical KVO rules say our clients should call -invalidate on us before the target deallocates. We'll watch the target so we can recover if they didn't.
     if (observationTarget != owner)
         _targetObserver = [[DMKeyValueTargetObserver alloc] initWithKeyValueObserver:self target:observationTarget];
@@ -153,16 +162,16 @@ static char DMKeyValueObserverContext;
 - (void)targetObserverDidInvalidate;
 {
     if (!_invalidated) {
-#if INVALIDATE_ON_TARGET_DEALLOC
+#if DMKVO_INVALIDATE_ON_TARGET_DEALLOC
         /* If you received this message, we are currently in a recoverable state. We have the opportunity
          * to unregister the observation before the target object deallocates too far. However, this is
          * ILLEGAL behavior with normal key-value observing, so you may want to avoid it if possible for
          * compatibility or general cleanliness. */
-#    if LOG_ON_TARGET_DEALLOC
+#    if DMKVO_LOG_ON_TARGET_DEALLOC
         NSLog(@"Note: The target of active %@ is deallocating. The observer will be invalidated now, with no change notification sent. Break on -targetObserverDidInvalidate to trace.", self);
         static BOOL printedSuppression;
         if (!printedSuppression)
-            NSLog(@"(suppress log with NS_BLOCK_ASSERTIONS or LOG_ON_TARGET_DEALLOC)"), printedSuppression = 1;
+            NSLog(@"(suppress log with NS_BLOCK_ASSERTIONS or DMKVO_LOG_ON_TARGET_DEALLOC)"), printedSuppression = 1;
 #    endif
         BOOL trace = NO;
         if (trace) // Set this to YES in the debugger and step in to see the location of the observer in the source code. Note that this calls the block that otherwise would NOT be run.
