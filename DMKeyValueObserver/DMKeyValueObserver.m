@@ -50,7 +50,9 @@ static char DMKeyValueObserverContext;
 @implementation DMKeyValueObserver {
     BOOL _invalidated;
 
+    __unsafe_unretained id _unsafeSingleTarget; // either this or _targetsAsUnsafePointers is non-nil.
     NSHashTable *_targetsAsUnsafePointers;
+
     NSArray *_targetObservers;
     __unsafe_unretained id _unsafeOwner;
     DMKeyValueObserverBlock _actionBlock;
@@ -71,7 +73,7 @@ static char DMKeyValueObserverContext;
     if (_invalidated)
         return [NSString stringWithFormat:@"<%@ %p (invalidated)>", [self class], self];
 
-    __unsafe_unretained id anyTarget = _targetsAsUnsafePointers.anyObject;
+    __unsafe_unretained id anyTarget = _unsafeSingleTarget ? : _targetsAsUnsafePointers.anyObject;
     NSString *targetString = [NSString stringWithFormat:@"<%@ %p>", ([anyTarget class] ? : @"(deallocated object)"), anyTarget];
     if (_targetsAsUnsafePointers.count > 1)
         targetString = [NSString stringWithFormat:@"%lu objects (including %@)", (unsigned long)_targetsAsUnsafePointers.count, targetString];
@@ -108,9 +110,13 @@ static char DMKeyValueObserverContext;
             [targetObserver invalidate];
         _targetObservers = nil;
 
-        NSArray *remainingObjects = _targetsAsUnsafePointers.allObjects;
-        _targetsAsUnsafePointers = nil;
-        [remainingObjects removeObserver:self fromObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){0, remainingObjects.count}] forKeyPath:_keyPath context:&DMKeyValueObserverContext];
+        if (_unsafeSingleTarget) {
+            [_unsafeSingleTarget removeObserver:self forKeyPath:_keyPath context:&DMKeyValueObserverContext];
+        } else {
+            NSArray *remainingObjects = _targetsAsUnsafePointers.allObjects;
+            _targetsAsUnsafePointers = nil;
+            [remainingObjects removeObserver:self fromObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){0, remainingObjects.count}] forKeyPath:_keyPath context:&DMKeyValueObserverContext];
+        }
 
         _keyPath = nil;
         _unsafeOwner = nil;
@@ -147,11 +153,17 @@ static char DMKeyValueObserverContext;
     [DMObserverInvalidator attachObserver:self toOwner:owner];
 
     const NSUInteger targetCount = observationTargets.count;
-    [observationTargets addObserver:self toObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){0, targetCount}] forKeyPath:keyPath options:options context:&DMKeyValueObserverContext];
+    if (targetCount == 1) {
+        // Avoid hash table overhead (largest in -invalidate) for the common single target case.
+        _unsafeSingleTarget = observationTargets[0];
+        [_unsafeSingleTarget addObserver:self forKeyPath:keyPath options:options context:&DMKeyValueObserverContext];
+    } else {
+        [observationTargets addObserver:self toObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){0, targetCount}] forKeyPath:keyPath options:options context:&DMKeyValueObserverContext];
 
-    _targetsAsUnsafePointers = [[NSHashTable alloc] initWithOptions:(NSPointerFunctionsOpaqueMemory | NSPointerFunctionsObjectPointerPersonality) capacity:targetCount];
-    for (id observationTarget in observationTargets)
-        [_targetsAsUnsafePointers addObject:observationTarget];
+        _targetsAsUnsafePointers = [[NSHashTable alloc] initWithOptions:(NSPointerFunctionsOpaqueMemory | NSPointerFunctionsObjectPointerPersonality) capacity:targetCount];
+        for (id observationTarget in observationTargets)
+            [_targetsAsUnsafePointers addObject:observationTarget];
+    }
 
 #if HAVE_DMBLOCKUTILITIES && !defined(NS_BLOCK_ASSERTIONS)
     if ([DMBlockUtilities isObject:owner implicitlyRetainedByBlock:actionBlock])
@@ -197,8 +209,14 @@ static char DMKeyValueObserverContext;
      * to unregister the observation before the target object deallocates too far. However, this is
      * ILLEGAL behavior with normal key-value observing, so you may want to avoid it if possible for
      * compatibility or general cleanliness. */
-    [_targetsAsUnsafePointers removeObject:deallocatingTarget];
     [deallocatingTarget removeObserver:self forKeyPath:_keyPath context:&DMKeyValueObserverContext];
+
+    if (_unsafeSingleTarget) {
+        NSAssert(deallocatingTarget == _unsafeSingleTarget, nil);
+        _unsafeSingleTarget = nil;
+    } else {
+        [_targetsAsUnsafePointers removeObject:deallocatingTarget];
+    }
 
 #    if DMKVO_LOG_ON_TARGET_DEALLOC
     NSLog(@"Note: Target <%@ %p> of active %@ is deallocating. The target will be unobserved now, with no change notification sent. Break on -targetWillDeallocate: to trace.", [deallocatingTarget class], deallocatingTarget, self);
