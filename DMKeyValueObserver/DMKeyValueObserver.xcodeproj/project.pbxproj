@@ -44,7 +44,7 @@
 		2880EC2614CCFC85003BFCBC /* DMKeyValueObserverTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMKeyValueObserverTest.m; sourceTree = "<group>"; };
 		28944FBC13BAACAD00ABF04E /* DMKeyValueObserverTest.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DMKeyValueObserverTest.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		28944FBD13BAACAD00ABF04E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		28944FDA13BAD93D00ABF04E /* DMAround */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = DMAround; path = DMKeyValueObserver; sourceTree = BUILT_PRODUCTS_DIR; };
+		28944FDA13BAD93D00ABF04E /* DMKeyValueObserver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DMKeyValueObserver; sourceTree = BUILT_PRODUCTS_DIR; };
 		28BE615814CCFCE400BFD8A1 /* DMAutoInvalidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DMAutoInvalidation.h; path = ../DMAutoInvalidation.h; sourceTree = "<group>"; };
 		28BE615914CCFCE400BFD8A1 /* DMAutoInvalidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DMAutoInvalidation.m; path = ../DMAutoInvalidation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -99,7 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				28944FBC13BAACAD00ABF04E /* DMKeyValueObserverTest.octest */,
-				28944FDA13BAD93D00ABF04E /* DMAround */,
+				28944FDA13BAD93D00ABF04E /* DMKeyValueObserver */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -167,7 +167,7 @@
 			);
 			name = DMKeyValueObserver;
 			productName = DMAround;
-			productReference = 28944FDA13BAD93D00ABF04E /* DMAround */;
+			productReference = 28944FDA13BAD93D00ABF04E /* DMKeyValueObserver */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */

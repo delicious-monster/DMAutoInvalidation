@@ -86,6 +86,7 @@
         DMKeyValueObserver *observer = [[DMKeyValueObserver alloc] initWithKeyPath:@"name" object:mdict attachedToOwner:dummyOwner options:0 action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) { }];
         
         STAssertNotNil(observer, nil);
+        NSLog(@"Expect logged message:");
         mdict = nil; // Should log
     }
     {
@@ -93,7 +94,8 @@
         NSArrayController *ac = [[NSArrayController alloc] initWithContent:[NSArray arrayWithObjects:@"1", @"2", nil]];
         NSObject *dummyOwner = [NSObject new];
         (void)[[DMKeyValueObserver alloc] initWithKeyPath:@"arrangedObjects" object:ac attachedToOwner:dummyOwner options:NSKeyValueObservingOptionInitial action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) { }];
-        
+
+        NSLog(@"Expect logged message:");
         ac = nil; // Should log
     }
 }
@@ -107,7 +109,7 @@
      *
      * This required changing DMObserverInvalidator such that -invalidate is sent earlier in the
      * deallocation process. */
-    {
+    @autoreleasepool {
         MyClass *twoLevel = [MyClass new];
         MyClass *nestedObj = [MyClass new];
         twoLevel.nestedObj = nestedObj;
@@ -128,10 +130,11 @@
 
         // Shouldn't crash:
         nestedObj.leafValue = @"Badger";
+        STAssertEquals(callCount, 2UL, nil);
         nestedObj = nil;
     }
     // Let's make things harder. Use a key-path that passes through 'self' multiple times: A -> B -> A -> B -> leafValue
-    {
+    @autoreleasepool {
         MyClass *a = [MyClass new], *b = [MyClass new];
         a.nestedObj = b; b.nestedObj = a;
 
@@ -153,6 +156,38 @@
         b.leafValue = @"Badger";
         b = nil;
     }
+}
+
+- (void)testObservingBatch;
+{
+    NSMutableDictionary *mdict1 = [NSMutableDictionary dictionary];
+    NSMutableDictionary *mdict2 = [NSMutableDictionary dictionary];
+    NSMutableDictionary *mdict3 = [NSMutableDictionary dictionary];
+    NSObject *dummyOwner = [NSObject new];
+
+    __block NSUInteger callCount = 0;
+    @autoreleasepool {
+        DMKeyValueObserver *observer = [[DMKeyValueObserver alloc] initWithKeyPath:@"name" objects:@[mdict1, mdict2, mdict3] attachedToOwner:dummyOwner options:0 action:^(NSDictionary *changeDict, id localOwner, DMKeyValueObserver *observer) {
+            STAssertTrue(observer.changingObject == mdict1, @"-changingObject should return the appropriate dictionary");
+            callCount++;
+        }];
+        STAssertNotNil(observer, nil);
+        STAssertEquals(callCount, 0UL, nil);
+    } // autorelease pool so array literal gets released
+
+    [mdict1 setObject:[NSDate date] forKey:@"date"];
+    STAssertEquals(callCount, 0UL, nil);
+    [mdict1 setObject:@"Steve" forKey:@"name"];
+    STAssertEquals(callCount, 1UL, nil);
+    [mdict1 setObject:@"Bob" forKey:@"name"];
+    STAssertEquals(callCount, 2UL, nil);
+
+    NSLog(@"Expect logged message:");
+    mdict2 = nil; // Should log
+
+    dummyOwner = nil;
+    [mdict1 setObject:@"Eric" forKey:@"name"];
+    STAssertEquals(callCount, 2UL, @"Releasing owner should trigger invalidation of observer");
 }
 
 @end

@@ -14,5 +14,6 @@
 - (void)testOwnerTearDown;
 - (void)testPrematureTargetDeallocation;
 - (void)testSelfObservation;
+- (void)testObservingBatch;
 
 @end
