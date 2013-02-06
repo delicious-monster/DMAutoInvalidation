@@ -142,18 +142,18 @@ static char DMKeyValueObserverContext;
 - (id)initWithKeyPath:(NSString *)keyPath objects:(NSArray *)observationTargets attachedToOwner:(id)owner options:(NSKeyValueObservingOptions)options action:(DMKeyValueObserverBlock)actionBlock;
 {
     // Possible future: We might want to support a nil owner for global-type things
-    NSParameterAssert(keyPath && observationTargets.count && owner && actionBlock);
+    NSParameterAssert(keyPath && observationTargets && owner && actionBlock);
     if (!(self = [super init]))
         return nil;
     
     _keyPath = [keyPath copy];
     _actionBlock = [actionBlock copy];
     _unsafeOwner = owner;
-    
-    [DMObserverInvalidator attachObserver:self toOwner:owner];
 
     const NSUInteger targetCount = observationTargets.count;
-    if (targetCount == 1) {
+    if (targetCount == 0) {
+        return nil;
+    } else if (targetCount == 1) {
         // Avoid hash table overhead (largest in -invalidate) for the common single target case.
         _unsafeSingleTarget = observationTargets[0];
         [_unsafeSingleTarget addObserver:self forKeyPath:keyPath options:options context:&DMKeyValueObserverContext];
@@ -164,6 +164,8 @@ static char DMKeyValueObserverContext;
         for (id observationTarget in observationTargets)
             [_targetsAsUnsafePointers addObject:observationTarget];
     }
+
+    [DMObserverInvalidator attachObserver:self toOwner:owner];
 
 #if HAVE_DMBLOCKUTILITIES && !defined(NS_BLOCK_ASSERTIONS)
     if ([DMBlockUtilities isObject:owner implicitlyRetainedByBlock:actionBlock])
