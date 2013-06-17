@@ -91,7 +91,7 @@ static void callback(ConstFSEventStreamRef streamRef, void *clientCallbackInfo, 
         return;
     
     // If our owner has deallocated, we should be invalidated at this point. Since we're not, our owner must still be alive.
-    LIFilesystemEventActionBlock actionBlock = _actionBlock; // Use a local reference, as the actionBock could call -invalidate on us
+    LIFilesystemEventActionBlock actionBlock = [_actionBlock copy]; // Use a local reference, as the actionBock could call -invalidate on us
     actionBlock(_unsafeOwner, self);
 }
 
