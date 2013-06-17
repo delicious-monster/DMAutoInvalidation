@@ -191,10 +191,9 @@ static char DMKeyValueObserverContext;
         return;
 
     // If our owner has deallocated, we should be invalidated at this point. Since we're not, our owner must still be alive.
-    DMKeyValueObserverBlock actionBlock = _actionBlock; // Use a local reference, as the actionBock could call -invalidate on us
+    DMKeyValueObserverBlock actionBlock = [_actionBlock copy]; // Use a local reference, as the actionBock could call -invalidate on us
     _changingObject = object;
     actionBlock(changeDict, _unsafeOwner, self);
-    [actionBlock self]; // required for compiler to not optimize away retain/release
     _changingObject = nil;
 }
 
