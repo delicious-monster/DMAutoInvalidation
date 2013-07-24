@@ -7,6 +7,7 @@
 //
 
 #import "DMNotificationObserver.h"
+#import <CoreData/CoreData.h>
 
 
 /* The action block is passed the notification, the owner as a parameter (to avoid retain cycles),
